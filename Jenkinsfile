@@ -6,6 +6,8 @@ pipeline {
     }
     environment {
         DOCKER_HOST = 'tcp://host.docker.internal:2375'
+        APP_NAME = 'webflux-demo'
+        IMAGE_TAG = '0.0.1'
     }
     stages {
         stage ('Sync Source') {
@@ -22,26 +24,22 @@ pipeline {
         stage ('Dockerize Source') {
             steps {
                 script {
-                    def imageName = 'webflux-demo'
-                    def imageTag = '0.0.1'
-                    def imageId = sh(script: "docker images ${imageName}:${imageTag} --format '{{.ID}}'", returnStdout: true).trim()
-
+                    def imageId = sh(script: "docker images ${env.APP_NAME}:${env.IMAGE_TAG} --format '{{.ID}}'", returnStdout: true).trim()
                     env.OLD_IMAGE_ID = imageId
-                    docker.build('webflux-demo:0.0.1', '-f Dockerfile .')
+                    docker.build('${env.APP_NAME}:${env.IMAGE_TAG}', '-f Dockerfile .')
                 }
             }
         }
         stage('Delete Old Container') {
             steps {
                 script {
-                    def containerName = 'webflux-demo'
-                    def containerId = sh(script: "docker ps -aqf 'name=${containerName}'", returnStdout: true).trim()
+                    def containerId = sh(script: "docker ps -aqf 'name=${env.APP_NAME}'", returnStdout: true).trim()
                     def containerExists = sh(script: "docker ps -a --filter 'id=${containerId}' --format '{{.ID}}'", returnStdout: true).trim()
                     if (containerExists) {
                         sh "docker rm -f ${containerId}"
                         echo "Removed container: ${containerId}"
                     } else {
-                        echo "${containerName} not exist!"
+                        echo "${env.APP_NAME} not exist!"
                     }
                 }
             }
@@ -49,7 +47,7 @@ pipeline {
         stage ('Run Webapp') {
             steps {
                 script {
-                    docker.image('webflux-demo:0.0.1').run('-d -p 8081:8081 --name webflux-demo')
+                    docker.image('${env.APP_NAME}:${env.IMAGE_TAG}').run('-d -p 8081:8081 --name ${env.APP_NAME}')
                 }
             }
         }
