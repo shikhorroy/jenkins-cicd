@@ -33,8 +33,8 @@ pipeline {
         stage('Delete Old Container') {
             steps {
                 script {
-                    def containerId = sh(script: "docker ps -aqf 'name=${env.APP_NAME}'", returnStdout: true).trim()
-                    def containerExists = sh(script: "docker ps -a --filter 'id=${containerId}' --format '{{.ID}}'", returnStdout: true).trim()
+                    def containerId = sh(script: "docker ps -aqf \'name=${env.APP_NAME}\'", returnStdout: true).trim()
+                    def containerExists = sh(script: "docker ps -a --filter \'id=${containerId}\' --format '{{.ID}}'", returnStdout: true).trim()
                     if (containerExists) {
                         sh "docker rm -f ${containerId}"
                         echo "Removed container: ${containerId}"
