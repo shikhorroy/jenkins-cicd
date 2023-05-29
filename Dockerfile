@@ -5,7 +5,7 @@ FROM amazoncorretto:17-alpine
 WORKDIR /app
 
 # Copy the JAR file into the container
-COPY ../build/libs/webflux-demo-0.0.1.jar app.jar
+COPY build/libs/webflux-demo-0.0.1.jar app.jar
 
 # Expose the port that the application will listen on
 EXPOSE 8081
