@@ -47,7 +47,7 @@ pipeline {
         stage ('Run Webapp') {
             steps {
                 script {
-                    docker.image('${env.APP_NAME}:${env.IMAGE_TAG}').run('-d -p 8081:8081 --name ${env.APP_NAME}')
+                    docker.image("${env.APP_NAME}:${env.IMAGE_TAG}").run("-d -p 8081:8081 --name ${env.APP_NAME}")
                 }
             }
         }
