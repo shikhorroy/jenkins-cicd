@@ -26,15 +26,15 @@ pipeline {
                 script {
                     def imageId = sh(script: "docker images ${env.APP_NAME}:${env.IMAGE_TAG} --format '{{.ID}}'", returnStdout: true).trim()
                     env.OLD_IMAGE_ID = imageId
-                    docker.build('${env.APP_NAME}:${env.IMAGE_TAG}', '-f Dockerfile .')
+                    docker.build("${env.APP_NAME}:${env.IMAGE_TAG}", '-f Dockerfile .')
                 }
             }
         }
         stage('Delete Old Container') {
             steps {
                 script {
-                    def containerId = sh(script: "docker ps -aqf name=${env.APP_NAME}", returnStdout: true).trim()
-                    def containerExists = sh(script: "docker ps -a --filter id=${containerId} --format '{{.ID}}'", returnStdout: true).trim()
+                    def containerId = sh(script: "docker ps -aqf 'name=${env.APP_NAME}'", returnStdout: true).trim()
+                    def containerExists = sh(script: "docker ps -a --filter 'id=${containerId}' --format '{{.ID}}'", returnStdout: true).trim()
                     if (containerExists) {
                         sh "docker rm -f ${containerId}"
                         echo "Removed container: ${containerId}"
