@@ -4,7 +4,9 @@ pipeline {
     tools {
         dockerTool 'docker-latest'
     }
-
+    environment {
+        DOCKER_HOST = 'tcp://host.docker.internal:2375'
+    }
     stages {
         stage ('Sync Source') {
             steps {
@@ -19,7 +21,7 @@ pipeline {
         }
         stage ('Dockerize Source') {
             steps {
-                sh ('docker build -t webflux-demo:0.0.1 .')
+               sh ('docker build -t webflux-demo:0.0.1 .')
             }
         }
     }
