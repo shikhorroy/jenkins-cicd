@@ -1,0 +1,35 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: webflux-demo-service
+spec:
+  selector:
+    app: webflux-demo-app
+  ports:
+    - protocol: "TCP"
+      port: 8081
+      targetPort: 8081
+  type: LoadBalancer
+
+---
+
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: webflux-demo-app
+spec:
+  selector:
+    matchLabels:
+      app: webflux-demo-app
+  replicas: 2
+  template:
+    metadata:
+      labels:
+        app: webflux-demo-app
+    spec:
+      containers:
+        - name: webflux-demo
+          image: webflux-demo:0.0.1
+          imagePullPolicy: IfNotPresent
+          ports:
+            - containerPort: 8081
