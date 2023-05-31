@@ -12,7 +12,9 @@ pipeline {
     stages {
         stage ('Sync Source') {
             steps {
-                git 'https://github.com/bjitshikhor/webflux-demo'
+                checkout scmGit(
+                    branches: [[name: 'main']],
+                    userRemoteConfigs: [[url: 'https://github.com/shikhorroy/jenkins-cicd']])
             }
         }
         stage ('Build Source') {
