@@ -21,7 +21,7 @@ spec:
   selector:
     matchLabels:
       app: webflux-demo-app
-  replicas: 2
+  replicas: 1
   template:
     metadata:
       labels:
