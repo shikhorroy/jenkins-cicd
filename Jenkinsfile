@@ -13,7 +13,7 @@ pipeline {
     stages {
         stage ('Sync Source') {
             steps {
-                echo $PATH
+                echo environment.PATH
                 checkout scmGit(
                     branches: [[name: 'main']],
                     userRemoteConfigs: [[url: 'https://github.com/shikhorroy/jenkins-cicd']])
