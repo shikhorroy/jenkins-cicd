@@ -55,23 +55,23 @@ pipeline {
 //                 }
 //             }
 //         }
-//         stage ('Cleanup Old Image') {
-//             steps {
-//                 script {
-//                     if (env.OLD_IMAGE_ID) {
-//                         sh "docker rmi ${env.OLD_IMAGE_ID}"
-//                         echo "Deleted image: ${env.OLD_IMAGE_ID}"
-//                     } else {
-//                         echo "Image not found with ID: ${env.OLD_IMAGE_ID}"
-//                     }
-//                 }
-//             }
-//         }
         stage ('K8S Deployment') {
             steps {
                 script {
                     withKubeConfig(credentialsId: 'kubeConfig') {
                         sh 'kubectl apply -f deployment.yaml'
+                    }
+                }
+            }
+        }
+        stage ('Cleanup Old Image') {
+            steps {
+                script {
+                    if (env.OLD_IMAGE_ID) {
+                        sh "docker rmi ${env.OLD_IMAGE_ID}"
+                        echo "Deleted image: ${env.OLD_IMAGE_ID}"
+                    } else {
+                        echo "Image not found with ID: ${env.OLD_IMAGE_ID}"
                     }
                 }
             }
