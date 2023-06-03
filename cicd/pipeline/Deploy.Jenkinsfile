@@ -30,7 +30,7 @@ pipeline {
                 script {
                     def imageId = sh(script: "docker images ${env.APP_NAME}:${env.IMAGE_TAG} --format '{{.ID}}'", returnStdout: true).trim()
                     env.OLD_IMAGE_ID = imageId
-                    docker.build("${env.APP_NAME}:${env.IMAGE_TAG}", '-f Dockerfile .')
+                    docker.build("${env.APP_NAME}:${env.IMAGE_TAG}", '-f cicd/docker/Dockerfile .')
                 }
             }
         }
