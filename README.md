@@ -6,8 +6,8 @@ Application URL: http://localhost:8081
 
 ### Jenkins plugins:
 
-- Kubernetes ([Details](https://plugins.jenkins.io/kubernetes/))
 - Docker Pipeline ([Details](https://plugins.jenkins.io/docker-workflow/))
+- Kubernetes ([Details](https://plugins.jenkins.io/kubernetes/))
 - Kubernetes CLI ([Details](https://plugins.jenkins.io/kubernetes-cli/))
 
 ### Tools:
