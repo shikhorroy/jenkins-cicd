@@ -16,7 +16,7 @@ pipeline {
             steps {
                 steps {
                     script {
-                         sh 'mv kubectl $HOME/bin'
+                         sh "mv kubectl ${HOME}/bin"
                     }
                 }
             }
