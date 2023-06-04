@@ -1,6 +1,8 @@
 pipeline {
     agent any
-
+    parameters {
+        booleanParam(name: 'skipSonarTest', defaultValue: true, description: 'Skip Sonar Test')
+    }
     tools {
         dockerTool 'docker-latest'
     }
@@ -23,6 +25,20 @@ pipeline {
             steps {
                 sh ('chmod +x gradlew')
                 sh ('./gradlew clean build')
+            }
+        }
+        stage('SonarQube Test') {
+            when {
+                expression { params.skipSonarTest == false }
+            }
+            steps {
+                withSonarQubeEnv(installationName: 'sonarserver') {
+                    sh './gradlew sonar'
+                }
+
+                timeout(time: 1, unit: 'HOURS') {
+                  waitForQualityGate abortPipeline: true
+              }
             }
         }
         stage ('Dockerize Source') {
