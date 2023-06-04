@@ -1,7 +1,7 @@
 pipeline {
     agent any
     parameters {
-        booleanParam(name: 'skipSonarTest', defaultValue: true, description: 'Skip Sonar Test')
+        booleanParam(name: 'SKIP_SONAR_TEST', defaultValue: true, description: 'Skip Sonar Test?')
     }
     tools {
         dockerTool 'docker-latest'
@@ -29,7 +29,7 @@ pipeline {
         }
         stage('SonarQube Test') {
             when {
-                expression { params.skipSonarTest == false }
+                expression { params.SKIP_SONAR_TEST == false }
             }
             steps {
                 withSonarQubeEnv(installationName: 'sonarserver') {
